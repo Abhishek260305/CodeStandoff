@@ -4,14 +4,16 @@ import { PlayIcon, RefreshCwIcon } from "lucide-react"; // Icons used
 
 const Output = ({ editorRef, language }) => {
   const [output, setOutput] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRunLoading, setIsRunLoading] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
+    
     try {
-      setIsLoading(true);
+      setIsRunLoading(true);
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output.split("\n"));
       setIsError(!!result.stderr);
@@ -19,7 +21,24 @@ const Output = ({ editorRef, language }) => {
       console.error(error);
       alert(`An error occurred: ${error.message || "Unable to run code"}`);
     } finally {
-      setIsLoading(false);
+      setIsRunLoading(false);
+    }
+  };
+
+  const submitCode = async () => {
+    const sourceCode = editorRef.current.getValue();
+    if (!sourceCode) return;
+
+    try {
+      setIsSubmitLoading(true);
+      const { run: result } = await executeCode(language, sourceCode);
+      setOutput(result.output.split("\n"));
+      setIsError(!!result.stderr);
+    } catch (error) {
+      console.error(error);
+      alert(`An error occurred: ${error.message || "Unable to submit code"}`);
+    } finally {
+      setIsSubmitLoading(false);
     }
   };
 
@@ -31,11 +50,11 @@ const Output = ({ editorRef, language }) => {
           <div className="flex items-center gap-2">
             <button
               className={`inline-flex items-center border border-gray-500 rounded px-4 py-2 text-sm font-medium transition 
-                          ${isLoading ? "bg-gray-300 cursor-not-allowed" : "bg-white hover:bg-gray-100"}`}
+                          ${isRunLoading ? "bg-gray-300 cursor-not-allowed" : "bg-white hover:bg-gray-100"}`}
               onClick={runCode}
-              disabled={isLoading}
+              disabled={isRunLoading || isSubmitLoading} // Disable if either button is loading
             >
-              {isLoading ? (
+              {isRunLoading ? (
                 "Running..."
               ) : (
                 <>
@@ -45,7 +64,22 @@ const Output = ({ editorRef, language }) => {
               )}
             </button>
 
-
+            {/* New Submit Button */}
+            <button
+              className={`inline-flex items-center border border-gray-500 rounded px-4 py-2 text-sm font-medium transition 
+                          ${isSubmitLoading ? "bg-gray-300 cursor-not-allowed" : "bg-white hover:bg-gray-100"}`}
+              onClick={submitCode}
+              disabled={isSubmitLoading || isRunLoading} // Disable if either button is loading
+            >
+              {isSubmitLoading ? (
+                "Submitting..."
+              ) : (
+                <>
+                  <RefreshCwIcon className="w-4 h-4 mr-2" />
+                  Submit
+                </>
+              )}
+            </button>
           </div>
         </div>
 
@@ -54,7 +88,7 @@ const Output = ({ editorRef, language }) => {
           <pre className="font-mono text-sm">
             {output
               ? output.map((line, i) => <p key={i}>{line}</p>)
-              : 'Click "Run Code" to see the output here'}
+              : 'Click "Run Code" or "Submit" to see the output here'}
           </pre>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom'; 
 import './Navbar.css';
 
 const Navbar = () => {
@@ -9,9 +9,9 @@ const Navbar = () => {
         <h1>Coding Standoff</h1>
       </div>
       <div className="navbar-right">
-        <Link to="/home">Home</Link> {/* Navigates to Home */}
-        <Link to="/playground">Training</Link> {/* Navigates to Playground */}
-        <Link to="/help">Help</Link> {/* Add this route if needed */}
+        <a href="http://127.0.0.1:5500/index.html" target="_blank" rel="noopener noreferrer">Home</a>
+        <Link to="/subject">Training</Link> 
+        <Link to="/help">Help</Link> 
       </div>
     </nav>
   );

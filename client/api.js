@@ -1,10 +1,11 @@
 import axios from "axios";
-import { LANGUAGE_VERSIONS } from "./constants";
+import { LANGUAGE_VERSIONS } from "./Constants";
 
 const API = axios.create({
   baseURL: "https://emkc.org/api/v2/piston",
 });
 
+// Function to execute user code
 export const executeCode = async (language, sourceCode) => {
   const response = await API.post("/execute", {
     language: language,
@@ -17,3 +18,4 @@ export const executeCode = async (language, sourceCode) => {
   });
   return response.data;
 };
+

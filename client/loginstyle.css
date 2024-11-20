@@ -23,7 +23,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 44.1vh;
+  /* height: 47vh; */
   border: 3.5px solid #9f9ffa; /* Blue border color */
   border-radius: 24px; /* Rounded corners for the border */
   padding: -1px; /* Space between the border and content */

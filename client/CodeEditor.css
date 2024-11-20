@@ -1,30 +1,5 @@
-
 .code-editor-container {
   padding: 20px;
-  
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.logo {
-  width: 50px;
-  height: 50px;
-}
-
-.dp-container {
-  display: flex;
-  align-items: center;
-}
-
-.dp {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin: 0 10px;
 }
 
 .action-buttons {
@@ -33,74 +8,99 @@
 }
 
 .surrender-button {
-  border: 1px solid #ff0000; /* Red border to match button color */
+  border: 1px solid #ff0000;
   border-radius: 7px;
-  padding: 2px 20px; /* Adjust padding for smaller height */
+  padding: 2px 20px;
   background-color: transparent;
-  color: red; /* Set text color to match button color */
-  font-size: 15px; /* Smaller font size */
+  color: red;
+  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s; /* Add transition for color change */
-  margin-top: -5px; /* Adjust to move the button up */
-  margin-left: -100px; /* Adjust to move the button left */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .surrender-button:hover {
   background-color: #ff0000;
-  color: #fff; /* Change text color to white on hover */
+  color: #fff;
 }
-
-
 
 .main-content {
   display: flex;
   gap: 20px;
 }
 
-.left-column, .right-column {
+.right-column {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
+  padding-left: 10px;
 }
 
-.left-column {
-  width: 40%;
+.row-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
-.right-column {
-  width: 60%;
-}
-
-.question-box, .chat-box {
-  background-color: #333;
-  color: white;
-  padding: 16px;
-  border-radius: 8px;
-  height: 150px;
-}
-
-.chat-box {
-  height: 100px;
+.question {
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+  background-color: #ff0000;
 }
 
 .code-editor {
   display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
   flex-direction: column;
-  resize: both; /* Enable resizing in both directions */
-  /* min-width: 300px; 
-  min-height: 200px;  */
-  max-width: 100%; /* Prevent resizing beyond the container's width */
-  max-height: 100%; /* Prevent resizing beyond the container's height */
-  border: 2px solid #9f9ffa; /* Add a border with color and width */
-  border-radius: 8px; /* Optional: rounded corners */
-  padding: 1px; /* Adjust padding if needed */
+  max-width: 85%;
+  border: 2px solid #9f9ffa;
+  border-radius: 8px;
+  padding: 1px;
+  margin-left: 100px;
 }
 
 .code-editor-header {
-  font-size: 16px; /* Adjust font size as needed */
-  font-weight: bold; /* Optional: make text bold */
+  font-size: 16px;
+  font-weight: bold;
   margin-left: 10px;
   margin-top: -20px;
-  margin-bottom: 8px; /* Space between the text and editor */
-  color: #8391fd; /* Text color */
+  margin-bottom: 8px;
+  color: #8391fd;
 }
+
+.language-dropdown {
+  text-align: right;
+}
+
+.output-section {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.output-section h3 {
+  font-size: 1.2em;
+}
+
+.output-section pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.output-section button {
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+

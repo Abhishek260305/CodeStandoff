@@ -42,7 +42,7 @@ const Login = () => {
         if (response.ok) {
           setMessage('Login successful');
           console.log('Redirecting to home'); // Debugging message
-          navigate('/home'); // Navigate to the home page using React Router
+          window.location.href = "http://127.0.0.1:5500/index.html"; // Redirect to the home page using a full URL
         } else {
           const result = await response.json();
           setMessage(result.message || 'Error logging in');
