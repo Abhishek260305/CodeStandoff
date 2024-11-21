@@ -29,3 +29,58 @@ Real-time Communication: Socket.IO
 Code Execution: Piston API
 
 
+Installation
+
+To get started with the project locally:
+
+Clone this repository to your local machine:
+
+git clone https://github.com/yourusername/CodeStandoff.git
+
+Navigate into the project directory:
+
+cd CodeStandoff
+
+Install dependencies for both backend and frontend:
+
+For the backend (server-side):
+
+cd server
+
+npm install
+
+For the frontend (client-side):
+
+
+cd client
+
+npm install
+
+Start the development servers:
+
+For the backend:
+
+
+cd server
+
+npm start
+
+For the frontend:
+
+cd client
+
+npm start
+
+The application will be running on http://localhost:3000 (frontend) and http://localhost:5000 (backend).
+
+
+Contributing
+If you'd like to contribute to the project, feel free to submit a pull request. Here are a few ways you can help:
+
+Fix bugs or improve existing features.
+
+Add new problem categories or coding challenges.
+
+Enhance the UI/UX.
+
+Please make sure to test your changes locally before submitting a pull request.
