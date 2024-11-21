@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // Set up middleware for JSON parsing and CORS
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'https://codestandoff.com', 
   methods: ['POST', 'GET'],
 }));
 
