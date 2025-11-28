@@ -6,6 +6,10 @@
   background-color: #312c2c;
   border: 1px solid #9f9ffa;
   height: 33px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
 }
 
 .navbar-left h1 {

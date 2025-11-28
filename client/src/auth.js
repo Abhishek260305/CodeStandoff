@@ -41,8 +41,15 @@ export const logout = async () => {
     // Clear token from localStorage
     localStorage.removeItem('authToken');
     
+    // Get CSRF token for logout request
+    const { ensureCsrfToken } = await import('./csrfUtils');
+    const csrfToken = await ensureCsrfToken();
+    
     const response = await fetch(`${API_BASE_URL}/logout`, {
       method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken || '', // Include CSRF token
+      },
       credentials: 'include', // Important: include cookies in request
     });
     

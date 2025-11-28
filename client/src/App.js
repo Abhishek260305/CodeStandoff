@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './Login';
 import HomePage from './HomePage';
@@ -14,8 +14,18 @@ import Subject from './subject';
 import QuestionDetail from './QuestionDetails';
 import Chatbox from './Chatbox';
 import ProtectedRoute from './ProtectedRoute';
+import { refreshCsrfToken } from './api';
 
 const App = () => {
+  // Fetch CSRF token on app initialization
+  useEffect(() => {
+    // Fetch CSRF token when app loads
+    refreshCsrfToken().catch(error => {
+      console.warn('Failed to fetch CSRF token on app load:', error);
+      // Non-critical error, app can still function
+    });
+  }, []);
+
   return (
     <Router>
       <Navbar /> {/* Navbar is outside of Routes so it stays on all pages */}

@@ -29,10 +29,20 @@ const Login = () => {
     event.preventDefault();
     if (validateForm()) {
       try {
+        // Get CSRF token before making request
+        const { ensureCsrfToken } = await import('./csrfUtils');
+        const csrfToken = await ensureCsrfToken();
+        
+        if (!csrfToken) {
+          setMessage('Unable to get security token. Please refresh the page.');
+          return;
+        }
+
         const response = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken, // Include CSRF token in header
           },
           credentials: 'include', // Important: include cookies in request
           body: JSON.stringify({
@@ -58,10 +68,52 @@ const Login = () => {
           }, 100);
         } else {
           const result = await response.json();
+          
+          // Handle CSRF token errors
+          if (response.status === 403 && result.message?.includes('CSRF')) {
+            // CSRF token expired, try to refresh and retry
+            const { refreshCsrfToken } = await import('./csrfUtils');
+            const newToken = await refreshCsrfToken();
+            
+            if (newToken) {
+              // Retry login with new token
+              try {
+                const retryResponse = await fetch(`${API_BASE_URL}/login`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': newToken,
+                  },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    usernameOrEmail: formData.usernameOrEmail,
+                    password: formData.password,
+                  }),
+                });
+                
+                if (retryResponse.ok) {
+                  const retryResult = await retryResponse.json();
+                  setMessage('Login successful');
+                  if (retryResult.token) {
+                    localStorage.setItem('authToken', retryResult.token);
+                  }
+                  setTimeout(() => {
+                    navigate('/home');
+                  }, 100);
+                  return;
+                }
+              } catch (retryError) {
+                setMessage('Authentication failed. Please try again.');
+                return;
+              }
+            }
+          }
+          
           setMessage(result.message || 'Error logging in');
         }
       } catch (error) {
-        setMessage('Error logging in');
+        console.error('Login error:', error);
+        setMessage('Error logging in. Please check your connection.');
       }
     }
   };

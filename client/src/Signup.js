@@ -55,11 +55,22 @@ const Signup = () => {
     event.preventDefault();
     if (validateForm()) {
       try {
+        // Get CSRF token before making request
+        const { ensureCsrfToken } = await import('./csrfUtils');
+        const csrfToken = await ensureCsrfToken();
+        
+        if (!csrfToken) {
+          setMessage('Unable to get security token. Please refresh the page.');
+          return;
+        }
+
         const response = await fetch(`${API_BASE_URL}/signup`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken, // Include CSRF token in header
           },
+          credentials: 'include', // Important: include cookies in request
           body: JSON.stringify(formData),
         });
 
@@ -67,10 +78,48 @@ const Signup = () => {
           setMessage('User registered successfully');
           navigate('/login'); // Navigate to the login page using React Router
         } else {
-          setMessage('Error registering user');
+          const result = await response.json();
+          
+          // Handle CSRF token errors
+          if (response.status === 403 && result.message?.includes('CSRF')) {
+            // CSRF token expired, try to refresh and retry
+            const { refreshCsrfToken } = await import('./csrfUtils');
+            const newToken = await refreshCsrfToken();
+            
+            if (newToken) {
+              // Retry signup with new token
+              try {
+                const retryResponse = await fetch(`${API_BASE_URL}/signup`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': newToken,
+                  },
+                  credentials: 'include',
+                  body: JSON.stringify(formData),
+                });
+                
+                if (retryResponse.ok) {
+                  setMessage('User registered successfully');
+                  navigate('/login');
+                  return;
+                } else {
+                  const retryResult = await retryResponse.json();
+                  setMessage(retryResult.message || 'Error registering user');
+                  return;
+                }
+              } catch (retryError) {
+                setMessage('Registration failed. Please try again.');
+                return;
+              }
+            }
+          }
+          
+          setMessage(result.message || 'Error registering user');
         }
       } catch (error) {
-        setMessage('Error registering user');
+        console.error('Signup error:', error);
+        setMessage('Error registering user. Please check your connection.');
       }
     }
   };
