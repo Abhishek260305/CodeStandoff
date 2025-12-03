@@ -56,11 +56,12 @@ app.use(sanitizeInput);
 // Note: Specific route limiters (login, signup) will override this
 app.use(apiLimiter);
 
-// CSRF token generation for GET requests (before routes)
-app.use(generateToken);
-
-// CSRF token endpoint
+// CSRF token endpoint (must be before csrfProtection middleware)
 app.get('/csrf-token', getCsrfToken);
+
+// CSRF protection middleware (generates tokens for GET, verifies for POST/PUT/DELETE)
+// Note: This should be AFTER the /csrf-token endpoint
+app.use(csrfProtection);
 
 // Connect to databases
 const { userDb, problemsDb } = connectDatabases();

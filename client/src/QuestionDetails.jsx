@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from 'axios';
-import { executeCode } from './api';
+import { executeCode } from './api'; 
 import { API_BASE_URL } from './auth';
 import { CODE_SNIPPETS, LANGUAGE_VERSIONS } from "./Constants";
 import './QuestionDetails.css';
@@ -197,36 +197,36 @@ export default function QuestionDetail() {
     if (!code.trim()) return;
     
     try {
-      setIsLoading(true);
+        setIsLoading(true);
       setIsError(false);
       setComparisonResult(null);
       
       const { run: result } = await executeCode(language, code);
       setOutput(result.output || '');
-      setIsError(!!result.stderr);
+        setIsError(!!result.stderr);
 
-      if (expectedOutput) {
-        const userOutput = normalizeOutput(result.output);
-        const expected = normalizeOutput(expectedOutput);
+        if (expectedOutput) {
+            const userOutput = normalizeOutput(result.output);
+            const expected = normalizeOutput(expectedOutput);
         
-        if (userOutput === expected) {
+            if (userOutput === expected) {
           setComparisonResult("Accepted");
           setShowSuccess(true);
-          setTimeout(() => {
+                setTimeout(() => {
             setShowSuccess(false);
             navigate('/subject');
           }, 2000);
-        } else {
+            } else {
           setComparisonResult(`Wrong Answer`);
+            }
         }
-      }
     } catch (error) {
       setIsError(true);
       setOutput(`Error: ${error.message || "Unable to run code"}`);
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
 
   const handleEditorMount = (editor) => {
     editorRef.current = editor;
@@ -266,7 +266,7 @@ export default function QuestionDetail() {
     };
   }, []);
 
-  if (!question) {
+  if (!question) { 
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'calc(100vh - 53px)', backgroundColor: '#1e1e1e' }}>
         <div style={{ fontSize: '18px', color: '#ffffff' }}>Loading question...</div>
@@ -438,8 +438,8 @@ export default function QuestionDetail() {
               </div>
             </div>
           )}
+          </div>
         </div>
-      </div>
 
       {/* Resizer Handle - Vertical */}
       <div
@@ -836,15 +836,15 @@ export default function QuestionDetail() {
                     }}>
                       {output}
                     </pre>
-                  </div>
+            </div>
                 )}
-              </div>
+            </div>
             ) : (
               <div style={{ color: '#6b7280', fontSize: '14px' }}>Run your code to see output here</div>
             )}
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Success Modal */}
       {showSuccess && (

@@ -234,7 +234,7 @@ export default function Subject() {
                                     >
                                         Solve
                                     </button>
-                                </div>
+                                    </div>
                             ))}
                         </div>
                     )}

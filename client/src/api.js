@@ -49,18 +49,14 @@ export const executeCode = async (language, sourceCode) => {
     if (error.response && error.response.status === 403) {
       // CSRF token expired or invalid, try to refresh
       csrfToken = null;
-      const newToken = await getCsrfToken();
+      const newToken = await refreshCsrfToken();
       
       if (newToken) {
         // Retry the request with new token
         try {
           const retryResponse = await apiClient.post("/api/execute", {
             language: language,
-            files: [
-              {
-                content: sourceCode,
-              },
-            ],
+            code: sourceCode, // Use 'code' field, not 'files' array
           }, {
             headers: {
               'X-CSRF-TOKEN': newToken,

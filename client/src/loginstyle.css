@@ -9,7 +9,8 @@ body {
 
 /* Full-page background image */
 .login-page {
-  height: 90vh;
+  min-height: 100vh;
+  height: 100%;
   background-image: url('https://img.freepik.com/free-photo/metal-grunge-background-with-scratches-stains_1048-14029.jpg?size=626&ext=jpg&ga=GA1.1.278603266.1723049193&semt=ais_hybrid');
   background-size: cover;
   background-position: center;
